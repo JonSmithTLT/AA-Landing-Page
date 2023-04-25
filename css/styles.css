@@ -1,0 +1,36 @@
+.flex-container {
+    display: flex;
+    /*justify-content: space-between;*/
+}
+
+#hero {
+    margin-top: 0;
+    background-color: #1F2937;
+    font-size: 24px;
+    color: antiquewhite;
+}
+
+header {
+    margin-bottom: 0;
+    background-color: #1F2937;
+    font-size: 24px;
+    color: antiquewhite;
+}
+ul {
+    padding: 0 10px;
+    margin: 0 25px;;
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    justify-content: space-evenly;
+}
+
+li {
+    margin: 0 10px;
+}
+nav {
+    padding: 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+}
