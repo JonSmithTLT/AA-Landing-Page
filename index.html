@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <header class = "flex-container">
+    <header class = "nav-container">
         <a src="/" id = logo> Asynchronous Applications Sentiment Analysis</a>
         <nav>
             <li><a href='/'>Home</a></li>
@@ -17,35 +17,38 @@
         </nav>
     </header>
     <div id = "hero">
-        <h1 id = "hero-main-text">Welcome to Async Apps Sentiment Analysis and Social Media Scraper</h1>
-        <p id = "hero-secondary-text">This service provides real-time social media posts and processing to see whats currently trending in the world!</p>
-        <a href = 'register.html'>
-            <button href = 'register.html'>Sign Up!</button>
-        </a>
-        <img src="/img/Social-media.jpg" alt = "Photo of Social Media Apps" width = 600px>
+        <div class = "hero-text">
+            <h1 id = "hero-main-text">Welcome to Async Apps Sentiment Analysis and Social Media Scraper</h1>
+            <p id = "hero-secondary-text">This service provides real-time social media posts and processing to see whats currently trending in the world!</p>
+            <a href = 'register.html'>
+                <button href = 'register.html'>Sign Up!</button>
+            </a>
+        </div>
+        <div class = "image">
+            <img src="/img/Social-media.jpg" alt = "Photo of Social Media Apps" width = 600px>
+        </div>
     </div>
 
-    <div class = "flex-container">
-        <h2>Supported Services</h2>
+    <h2>Supported Services</h2>
+        <div class = "flex-container">
             <ul id = "services">
-                <li><a href='twitter.html'><img src = '/img/twitter.jpg' alt = 'Twitter' width = 100px></a></li>
-                <li><a href='/'>Reddit</a></li>
-                <li><a href='/'>Telegram</a></li>
-                <li><a href='/'>Facebook</a></li>
-                <li><a href='/'>Telegram</a></li>
-                <li><a href='/'>Discord</a></li>
+                <li><a href='twitter.html'><img src = '/img/twitter-logo.png' alt = 'Twitter' width = '100px' ></a></li>
+                <li><a href='reddit.html'><img src = '/img/reddit-logo.png' alt = 'Reddit' width = 100px> </a></li>
+                <li><a href='facebook.html'><img src = '/img/facebook-logo.png' alt = 'Facebook' width = 100px></a></li>
+                <li><a href='telegram.html'><img src = '/img/telegram-logo.png' alt = 'Telegram' width = 100px></a></li>
+                <li><a href='discord.html'><img src = '/img/discord-logo.png' alt = 'Discord' width = 100px></a></li>
             </ul>
-    </div>
+        </div>
     <div class = "quote">
         <blockquote cite = 'https://www.vennli.com/blog/21-quotes-to-inspire-your-adventures-in-analytics'>
             <p>"An intelligent person is never afraid or ashamed to find errors in his understanding of things."</p>
             <p>- Bryant H. McGill</p>
         </blockquote>
     </div>
-        <div class = "sign-up">
+    <div class = "sign-up">
         <h4>Register for our service!</h4>
         <p>Signup to add tasks and view the data we are collecting for you!</p>
-        <a href = 'register.html'> <button>Sign Up!</button></a>
+        <a href = 'register.html'> <button type = 'button'>Sign Up!</button></a>
     </div>
 
     <footer> Copyright Asynchronous Applications 2023</footer>
