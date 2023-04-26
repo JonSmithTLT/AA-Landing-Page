@@ -99,14 +99,28 @@ li {
     margin: 0 10px;
 }
 nav {
-    padding: 0 10px;
+    padding: 0 50px;
     display: flex;
     list-style-type: none;
+}
+
+nav a {
+    color: antiquewhite;
+    text-decoration: none;
+}
+
+#hero button {
+    padding: 10px 25px;
+    border-radius: 25px;
+    background-color: #3882F6;
+    color: antiquewhite;
+    border: 0px;
 }
 
 .nav-container {
     display: flex;
     padding: 25px;
+    justify-content: space-between;
 }
 
 html {
