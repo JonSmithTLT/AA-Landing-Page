@@ -135,3 +135,12 @@ footer {
     padding: 25px;
     color: antiquewhite;
 }
+
+.sign-up button {
+    padding: 10px 25px;
+    margin-bottom: 25px;
+    border-radius: 5px;
+    background-color: #3882F6;
+    color: antiquewhite;
+    border: 1px solid antiquewhite;   
+}
