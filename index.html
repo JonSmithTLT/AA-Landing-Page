@@ -12,10 +12,36 @@
         <a src="/" id = logo> Asynchronous Applications Sentiment Analysis</a>
         <nav>
             <li><a href='index.html'>Home</a></li>
-            <li><a href = 'login.html'>Login</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><button id = "show-login">Login</button></li>
             <li><a href='register.html'>Register</a></li>
         </nav>
     </header>
+
+    <div class = "popup">
+        <div class = "close-button">&times;</div>
+        <div class = "form">
+            <h2>Login</h2>
+            <div class = "form-element">
+                <label for = "email">Email</label>
+                <input type = "email" placeholder="example@email.com" id = "email" required>
+            </div>
+
+            <div class = "form-element">
+                <label for = "password">Password</label>
+                <input type = "password" placeholder="**********" id = "password" required>
+            </div>
+
+            <div class = "form-element">
+                <label for = "remember-me">Remember Me</label>
+                <input type = "checkbox" id = "remember-me">
+            </div>
+
+            <div class = "form-element">
+                <button onclick="loginSubmit()">Sign In</button>
+            </div>
+        </div>
+    </div>
 
     <div id = "hero">
         <div class = "hero-text">
@@ -56,4 +82,56 @@
 
     
 </body>
+
+<script>
+    document.querySelector("#show-login").addEventListener("click", function(){
+        document.querySelector(".popup").classList.add("active");
+    });
+
+    document.querySelector(".popup .close-button").addEventListener("click", function(){
+        document.querySelector(".popup").classList.remove("active");
+    });
+
+    function loginSubmit() {
+            const loginForm = document.querySelector('.form');
+            const data = new FormData(loginForm);
+            const object = {};
+            data.forEach(function(value,key) {
+                object[key] = value;
+            })
+            const json = JSON.stringify(object);
+            console.log(json)
+
+            fetch("https://sv-api.learncs.io/login", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: json
+            })
+
+            .then(response => {
+                if (!response.ok) {
+                    return Promise.reject(response);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Success");
+                console.log(data);
+                window.location = "index.html"
+            })
+            .catch(error => {
+                if (typeof error.json === "function") {
+                    error.json().then(jsonError => {
+                        console.log("JSON error from API");
+                        console.log(error.statusText);
+                    })
+                } else {
+                    console.log("Fetch error");
+                    console.log(error);
+                }
+            })
+        }
+</script>
 </html>
