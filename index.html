@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asynchronous Applications Sentiment Analysis</title>
     <link rel="stylesheet" href="css/styles.css">
@@ -11,25 +10,47 @@
     <header class = "nav-container">
         <a src="/" id = logo> Asynchronous Applications Sentiment Analysis</a>
         <nav>
-            <li><a href='index.html'>Home</a></li>
-            <li><a href="tasks.html">Tasks</a></li>
-            <li><button id = "show-login">Login</button></li>
-            <li><a href='register.html'>Register</a></li>
+            <ul>
+                <li><a href='index.html'>Home</a></li>
+                <li><a href="tasks.html">Tasks</a></li>
+                <li><button id = "show-login" type = "button">Login</button></li>
+                <li><button class = "show-register" type = "button">Register</a></li>
+            </ul>
         </nav>
     </header>
 
-    <div class = "popup">
+    <div class = "popup" id = "register-popup">
+        <div class = "close-button">&times;</div>
+        <h2>Register</h2>
+        <form id = "register">
+            <div class = "form-element">
+                <label for = "email">Email</label>
+                <input type = "email" name = "email" placeholder="example@email.com" id = "login-email" required>
+            </div>
+
+            <div class = "form-element">
+                <label for = "password">Password</label>
+                <input type = "password" name = "password" placeholder="**********" id = "login-password" required>
+            </div>
+
+            <div class = "form-element">
+                <button type = "button" id = "register-button" onclick = "registerSubmit()">Register</button>
+            </div>
+        </form>
+    </div>
+
+    <div class = "popup" id = "login-popup">
         <div class = "close-button">&times;</div>
         <h2>Login</h2>
         <form id = "login">
             <div class = "form-element">
                 <label for = "email">Email</label>
-                <input type = "email" name = "email" placeholder="example@email.com" id = "email" required>
+                <input type = "email" name = "email" placeholder="example@email.com" id = "register-email" required>
             </div>
 
             <div class = "form-element">
                 <label for = "password">Password</label>
-                <input type = "password" name = "password" placeholder="**********" id = "password" required>
+                <input type = "password" name = "password" placeholder="**********" id = "register-password" required>
             </div>
 
             <div class = "form-element">
@@ -42,9 +63,7 @@
         <div class = "hero-text">
             <h1 id = "hero-main-text">Welcome to Async Apps Sentiment Analysis and Social Media Scraper</h1>
             <p id = "hero-secondary-text">This service provides real-time social media posts and processing to see whats currently trending in the world!</p>
-            <a href = 'register.html'>
-                <button href = 'register.html'>Sign Up!</button>
-            </a>
+            <button type = "button" class = "show-register">Sign Up!</button>
         </div>
         <div class = "image">
             <img src="img/Social-media.jpg" alt = "Photo of Social Media Apps" width = 600px>
@@ -70,7 +89,7 @@
     <div class = "sign-up">
         <h4>Register for our service!</h4>
         <p>Signup to add tasks and view the data we are collecting for you!</p>
-        <a href = 'register.html'> <button type = 'button'>Sign Up!</button></a>
+        <button class = "show-register" type = "button">Sign Up!</button>
     </div>
 
     <footer> Copyright Asynchronous Applications 2023</footer>
@@ -79,13 +98,42 @@
 </body>
 
 <script>
+    /*Nav Login Register Open Popup*/
     document.querySelector("#show-login").addEventListener("click", function(){
-        document.querySelector(".popup").classList.add("active");
+        document.querySelector("#login-popup").classList.add("active");
     });
 
-    document.querySelector(".popup .close-button").addEventListener("click", function(){
-        document.querySelector(".popup").classList.remove("active");
+    document.querySelector(".show-register").addEventListener("click", function(){
+        document.querySelector("#register-popup").classList.add("active");
     });
+
+    /*Nav Login Register Close Popup*/
+    document.querySelector("#register-popup .close-button").addEventListener("click", function(){
+        document.querySelector("#register-popup").classList.remove("active");
+    });
+
+    document.querySelector("#login-popup .close-button").addEventListener("click", function(){
+        document.querySelector("#login-popup").classList.remove("active");
+    });
+
+    /*Bottom Sign-up Popup*/
+    document.querySelector(".sign-up .show-register").addEventListener("click", function(){
+        document.querySelector("#register-popup").classList.add("active");
+    });
+
+    document.querySelector("#register-popup .close-button").addEventListener("click", function(){
+        document.querySelector("#register-popup").classList.remove("active");
+    });
+
+    /*Hero Text Sign-up Popup*/
+    document.querySelector("#hero .hero-text .show-register").addEventListener("click", function(){
+        document.querySelector("#register-popup").classList.add("active");
+    });
+
+    document.querySelector("#register-popup .close-button").addEventListener("click", function(){
+        document.querySelector("#register-popup").classList.remove("active");
+    });
+
 
     function loginSubmit() {
             const loginForm = document.querySelector('.popup #login');
@@ -116,7 +164,7 @@
             .then(data => {
                 console.log("Success");
                 console.log(data);
-                window.location = "index.html"
+                window.location = "tasks.html"
             })
             .catch(error => {
                 if (typeof error.json === "function") {
@@ -130,5 +178,50 @@
                 }
             })
         }
-</script>
+
+
+
+        function registerSubmit() {
+            const registerForm = document.querySelector('.popup #register');
+            const data = new FormData(registerForm);
+            console.log(data);
+            const object = {};
+            data.forEach(function(value,key) {
+                object[key] = value;
+            })
+            const json = JSON.stringify(object);
+            console.log(json)
+
+            fetch("https://sv-api.learncs.io/register", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: json
+            })
+
+            .then(response => {
+                if (!response.ok) {
+                    return Promise.reject(response);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Success");
+                console.log(data);
+                window.location = "tasks.html"
+            })
+            .catch(error => {
+                if (typeof error.json === "function") {
+                    error.json().then(jsonError => {
+                        console.log("JSON error from API");
+                        console.log(error.statusText);
+                    })
+                } else {
+                    console.log("Fetch error");
+                    console.log(error);
+                }
+            })
+        }
+    </script>
 </html>

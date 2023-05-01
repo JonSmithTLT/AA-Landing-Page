@@ -23,11 +23,16 @@
                 console.log("Success");
                 let table = document.getElementById('task-table');
                 let task_list = data['tasks'];
+                
                 for (let task_num = 0; task_num < task_list.length; task_num++) {
                     let row = document.createElement('tr');
                     Object.keys(task_list[task_num]).forEach(function(key) {
+                        let header = document.createElement('th')
+                        header.innerHTML = key
                         let cell = document.createElement('td');
                         cell.innerHTML = (task_list[task_num])[key];
+                        
+                        row.append(header);
                         row.append(cell);
                     })           
                     table.append(row);
