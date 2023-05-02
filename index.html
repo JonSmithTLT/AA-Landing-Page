@@ -12,7 +12,6 @@
         <nav>
             <ul>
                 <li><a href='index.html'>Home</a></li>
-                <li><a href="tasks.html">Tasks</a></li>
                 <li><button id = "show-login" type = "button">Login</button></li>
                 <li><button class = "show-register" type = "button">Register</a></li>
             </ul>
@@ -35,6 +34,45 @@
 
             <div class = "form-element">
                 <button type = "button" id = "register-button" onclick = "registerSubmit()">Register</button>
+            </div>
+        </form>
+    </div>
+
+    <div class = "popup" id = "twt-popup">
+        <div class = "close-button">&times;</div>
+        <h2>Twitter Tasks</h2>
+        <form id = "twt-form">
+            <div class = "form-element">
+                <label for = "source">Source ID</label>
+                <input type = "text" name = "source" id = "source" required>
+            </div>
+
+            <div class = "form-element">
+                <label for = "task">Task</label>
+                <input type = "text" id = "task" name = "task" placeholder = "This is where you enter the task or query you want data on." id = "description" required>
+            </div>
+
+            <div class = "form-element">
+                <label for = "description">Description</label>
+                <input type = "text" name = "description" placeholder="This is where you enter a description regarding what the task is meant to do." required>
+            </div>
+
+            <div class = "form-element">
+                <select name = "frequency" id = "frequency" title="Frequency" required>
+                    <option selected disabled>Choose Frequency</option>
+                    <option value= 30>30 sec</option>
+                    <option value= 60>60 sec</option>
+                    <option value= 90>90 sec</option>
+                </select>
+            </div>
+
+            <div class = "form-element">
+                <label for = "enabled">Enabled</label>
+                <input type = "checkbox" name = "enabled" id = "enabled">
+            </div>
+
+            <div class = "form-element">
+                <button type = "button" id = "task-button" onclick = "taskSubmit()">Submit</button>
             </div>
         </form>
     </div>
@@ -73,7 +111,7 @@
     <h2>Supported Services</h2>
         <div class = "flex-container">
             <ul id = "services">
-                <li><a href='twitter.html'><img src = 'img/twitter-logo.png' alt = 'Twitter' width = '100px' ></a></li>
+                <li><button type = "button" id = "twitter-tasks"><img src = 'img/twitter-logo.png' alt = 'Twitter' width = '100px' ></button></li>
                 <li><a href='reddit.html'><img src = 'img/reddit-logo.png' alt = 'Reddit' width = 100px> </a></li>
                 <li><a href='facebook.html'><img src = 'img/facebook-logo.png' alt = 'Facebook' width = 100px></a></li>
                 <li><a href='telegram.html'><img src = 'img/telegram-logo.png' alt = 'Telegram' width = 100px></a></li>
@@ -134,13 +172,21 @@
         document.querySelector("#register-popup").classList.remove("active");
     });
 
+    document.querySelector(".flex-container #services #twitter-tasks").addEventListener("click", function(){
+        document.querySelector("#twt-popup").classList.add("active");
+    });
+
+    document.querySelector("#twt-popup .close-button").addEventListener("click", function(){
+        document.querySelector("#twt-popup").classList.remove("active");
+    });
 
     function loginSubmit() {
             const loginForm = document.querySelector('.popup #login');
             const data = new FormData(loginForm);
-            console.log(data);
             const object = {};
             data.forEach(function(value,key) {
+                console.log(key);
+                console.log(data);
                 object[key] = value;
             })
             const json = JSON.stringify(object);
@@ -193,6 +239,59 @@
             console.log(json)
 
             fetch("https://sv-api.learncs.io/register", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: json
+            })
+
+            .then(response => {
+                if (!response.ok) {
+                    return Promise.reject(response);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Success");
+                console.log(data);
+                window.location = "tasks.html"
+            })
+            .catch(error => {
+                if (typeof error.json === "function") {
+                    error.json().then(jsonError => {
+                        console.log("JSON error from API");
+                        console.log(error.statusText);
+                    })
+                } else {
+                    console.log("Fetch error");
+                    console.log(error);
+                }
+            })
+        }
+        
+        function taskSubmit() {
+            const taskForm = document.querySelector('.popup #twt-form');
+            const data = new FormData(taskForm);
+            const object = {};
+            data.forEach(function(value,key) {
+                if (key === "frequency") {
+                    console.log(Number(value));
+                    object[key] = Number(value);
+                } else if (key === "enabled"){
+                    if (value === "on") {
+                        object[key] = 1;
+                    } else {
+                        object[key] = 0;
+                    }
+                } else {
+                    object[key] = value;
+                }
+            })
+            const json = JSON.stringify(object);
+            console.log(json);
+
+            fetch("https://sv-api.learncs.io/task", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

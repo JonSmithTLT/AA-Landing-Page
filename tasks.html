@@ -2,109 +2,149 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AA Tasks</title>
     <link rel = "stylesheet" href="css/styles.css">
 </head>
 <body>
-    <script>
-        function getTasks() {
-            fetch("https://sv-api.learncs.io/task", {
-                method: "GET",
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return Promise.reject(response);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Success");
-                let table = document.getElementById('task-table');
-                let task_list = data['tasks'];
-                
-                for (let task_num = 0; task_num < task_list.length; task_num++) {
-                    let row = document.createElement('tr');
-                    Object.keys(task_list[task_num]).forEach(function(key) {
-                        let header = document.createElement('th')
-                        header.innerHTML = key
-                        let cell = document.createElement('td');
-                        cell.innerHTML = (task_list[task_num])[key];
-                        
-                        row.append(header);
-                        row.append(cell);
-                    })           
-                    table.append(row);
-                }
-            })
-            .catch(error => {
-                if (typeof error.json === "function") {
-                    error.json().then(jsonError => {
-                        console.log("JSON error from API");
-                        console.log(error.statusText);
-                    })
-                } else {
-                    console.log("Fetch error");
-                    console.log(error);
-                }
-            })
-        }
-        function deleteTask(taskID) {
-            fetch("https://sv-api.learncs.io/task", {
-                method: "DELETE",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: json
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return Promise.reject(response);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Success");
-            })
-            .catch(error => {
-                if (typeof error.json === "function") {
-                    error.json().then(jsonError => {
-                        console.log("JSON error from API");
-                        console.log(error.statusText);
-                    })
-                } else {
-                    console.log("Fetch error");
-                    console.log(error);
-                }
-            })
-        }
-
-
-
-
-
-
-
-
-
-        getTasks();
-    </script>
     <header class = "nav-container">
         <a src="/" id = logo> Asynchronous Applications Sentiment Analysis</a>
         <nav>
-            <li><a href='index.html'>Home</a></li>
-            <li><a href="tasks.html">Tasks</a></li>
-            <li><a href = 'login.html'>Login</a></li>
-            <li><a href='register.html'>Register</a></li>
+            <ul>
+                <li><a href='index.html'>Home</a></li>
+                <li><a href = 'login.html'>Login</a></li>
+                <li><a href='register.html'>Register</a></li>
+            </ul>
         </nav>
     </header>
     <h1>Task Page</h1>
-    <table id = "task-table"></table>
+    <button id = "task-delete" type = "button">Delete</button>
+
+    <div class = "popup">
+        <div class = "close-button">&times;</div>
+        <h2>Delete</h2>
+        <form id = "delete">
+            <div class = "form-element">
+                <label for = "id">Task ID</label>
+                <input type="text" name = "id" placeholder="************************" required>
+            </div>
+
+            <div class = "form-element">
+                <button type = "button" id = "delete-button" onclick="deleteTask()">Delete</button>
+            </div> 
+        </form>
+    </div>
+
+    <table id = "task-table">
+        <tr>
+            <th>Data Source ID</th>
+            <th>Description</th>
+            <th>Enabled</th>
+            <th>ID</th>
+            <th>Last Run Time</th>
+            <th>Query</th>
+            <th>Repeat Interval</th>
+        </tr>
+    </table>
     
 </div>
 
     
+<script>
+    document.querySelector("#task-delete").addEventListener("click", function(){
+    document.querySelector(".popup").classList.add("active");
+    });
 
+    document.querySelector(".popup .close-button").addEventListener("click", function(){
+    document.querySelector(".popup").classList.remove("active");
+    });
+    function getTasks() {
+        fetch("https://sv-api.learncs.io/task", {
+            method: "GET",
+        })
+        .then(response => {
+            if (!response.ok) {
+                return Promise.reject(response);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Success");
+            let table = document.getElementById('task-table');
+            let task_list = data['tasks'];
+            
+            for (let task_num = 0; task_num < task_list.length; task_num++) {
+                let row = document.createElement('tr');
+                Object.keys(task_list[task_num]).forEach(function(key) {
+                    /*let header = document.createElement('th')
+                    header.innerHTML = key*/
+                    let cell = document.createElement('td');
+                    if ( (task_list[task_num])[key] === null) {
+                        cell.innerHTML = 0;
+                    } else {
+                    cell.innerHTML = (task_list[task_num])[key];
+                    }
+                    
+                    /*row.append(header);*/
+                    row.append(cell);
+                })           
+                table.append(row);
+            }
+        })
+        .catch(error => {
+            if (typeof error.json === "function") {
+                error.json().then(jsonError => {
+                    console.log("JSON error from API");
+                    console.log(error.statusText);
+                })
+            } else {
+                console.log("Fetch error");
+                console.log(error);
+            }
+        })
+    }
+    function deleteTask(taskID) {
+        const deleteForm = document.querySelector(".popup #delete");
+        const data = new FormData(deleteForm);
+        console.log(data);
+        const object = {};
+        data.forEach(function(value, key) {
+            object[key] = value;
+        })
+        const json = JSON.stringify(object);
+        console.log(json)
+    
+        fetch("https://sv-api.learncs.io/task", {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: json
+        })
+        .then(response => {
+            if (!response.ok) {
+                return Promise.reject(response);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Success");
+            window.location.reload();
+        })
+        .catch(error => {
+            if (typeof error.json === "function") {
+                error.json().then(jsonError => {
+                    console.log("JSON error from API");
+                    console.log(error.statusText);
+                })
+            } else {
+                console.log("Fetch error");
+                console.log(error);
+            }
+        })
+        
+    }
+    setInterval(getTasks(), 10000);
+</script>
 </body>
 </html>
