@@ -13,6 +13,7 @@ h2 {
     text-align: right;
     float: right;
     margin: 10px;
+    border-radius: 25px;
 }
 
 header {
@@ -48,6 +49,10 @@ nav li button {
     border: 0px;
     cursor: pointer;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+img {
+    border-radius: 25px;
 }
 
 .flex-container {
